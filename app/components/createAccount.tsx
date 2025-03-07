@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { router } from 'expo-router';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+
+import { router } from 'expo-router';
+import axios from 'axios';
 export default function CreateAccount() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -9,12 +12,20 @@ export default function CreateAccount() {
   const [password, setPassword] = useState('');
 
 
-  function handleCreateAccount() {
-    // Basic validation
+  async function handleCreateAccount() {
+
     if (!firstName || !lastName || !email || !password) {
       Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
+
+
+    await axios.post('http://localhost:8081/users', { firstName, lastName, email, password }).then((response) => {
+      console.log(response.data);
+      alert("success")
+
+    })
+
 
     // Simulate account creation logic
     console.log('Creating account with:', firstName, lastName, email, password);
@@ -27,41 +38,43 @@ export default function CreateAccount() {
   };
 
   return (
-    <View >
-      <Text style={styles.title}>Create Account</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="First Name"
-        value={firstName}
-        onChangeText={setFirstName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Last Name"
-        value={lastName}
-        onChangeText={setLastName}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+    <KeyboardAwareScrollView>
+      <View >
+        <Text style={styles.title}>Create Account</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="First Name"
+          value={firstName}
+          onChangeText={setFirstName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Last Name"
+          value={lastName}
+          onChangeText={setLastName}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
 
 
-      <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
-        <Text style={styles.buttonText}>Create Account</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
+          <Text style={styles.buttonText}>Create Account</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -74,26 +87,26 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    backgroundColor: 'white',
-    borderRadius: 5,
+    borderBottomWidth: 0.5,
+    height: 48,
+    borderBottomColor: "#8e93a1",
+    marginBottom: 30,
   },
   button: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 10,
+    backgroundColor: "darkmagenta",
+    height: 50,
+    marginBottom: 20,
+    justifyContent: "center",
+
+    borderRadius: 15,
   },
   buttonText: {
-    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#fff',
+    textTransform: 'uppercase',
     fontWeight: 'bold',
-    fontSize: 16,
+    padding: 10,
   },
 });
 

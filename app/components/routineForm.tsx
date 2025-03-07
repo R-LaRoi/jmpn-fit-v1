@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import WeeklyView from '../(tabs)/weeklyView';
 import MonthlyView from '../(tabs)/monthlyView';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -17,14 +19,72 @@ function WorkoutHistoryTabs() {
 
 export default function RoutineForm() {
   const [inputText, setInputText] = useState('');
+  const [duration, setDuration] = useState('');
+  const [type, setType] = useState('');
+  const [level, setLevel] = useState('');
+  const [date, setDate] = useState('');
+  const [weekday, setWeekday] = useState('');
+  const [exercises, setExercises] = useState('');
+  const [userId, setUserId] = useState<string | null>(null)
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId) {
+          setUserId(storedUserId);
+        }
+      } catch (error) {
+        console.error('Error fetching userId:', error);
+      }
+    };
+    fetchUserId();
+    const currentDate = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    setDate(currentDate.toLocaleDateString(undefined, options));
+    setWeekday(currentDate.toLocaleDateString(undefined, { weekday: 'long' }));
+  }, []);
+
+  const handleSubmit = async () => {
     if (inputText.trim() === '') {
-      Alert.alert('Error', 'Please enter some text.');
+      Alert.alert('Error', 'Please enter a routine name.');
       return;
     }
-    Alert.alert('Submitted', `You entered: ${inputText}`);
-    setInputText('');
+
+    if (!userId) {
+      Alert.alert('Error', 'User ID not found. Please log in.');
+      return;
+    }
+
+    const routineData = {
+      userId: userId,
+      routineName: inputText,
+      duration: duration,
+      type: type,
+      level: level,
+      date: date,
+      weekday: weekday,
+      exercises: exercises,
+    };
+
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with your actual MongoDB API endpoint
+      const response = await axios.post('YOUR_API_ENDPOINT', routineData);
+      Alert.alert('Submitted', 'Routine saved successfully!');
+      setInputText('');
+      setDuration('');
+      setType('');
+      setLevel('');
+      setExercises('');
+    } catch (error) {
+      console.error('Error submitting routine:', error);
+      Alert.alert('Error', 'Failed to save routine. Please try again.');
+    }
   };
 
   return (
@@ -32,10 +92,37 @@ export default function RoutineForm() {
       <Text style={styles.title}>Routine Form</Text>
       <TextInput
         style={styles.input}
-        placeholder="Enter text..."
+        placeholder="Routine Name"
         value={inputText}
         onChangeText={setInputText}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Duration (e.g., 30 min)"
+        value={duration}
+        onChangeText={setDuration}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Type (e.g., Cardio, Strength)"
+        value={type}
+        onChangeText={setType}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Level (e.g., Beginner, Intermediate)"
+        value={level}
+        onChangeText={setLevel}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Exercises (e.g., Pushups, Squats)"
+        value={exercises}
+        onChangeText={setExercises}
+      />
+      <Text>Date: {date}</Text>
+      <Text>Day: {weekday}</Text>
+
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
@@ -47,7 +134,7 @@ export default function RoutineForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    justifyContent: 'center'
   },
   title: {
     fontSize: 24,
@@ -56,12 +143,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
+    borderBottomWidth: 0.5,
+    height: 48,
+    borderBottomColor: "#8e93a1",
+    marginBottom: 30,
   },
   button: {
     backgroundColor: '#007bff',
