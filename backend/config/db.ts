@@ -11,18 +11,15 @@ async function connectDB() {
     }
 
     try {
-        await mongoose.connect(connectionString, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        } as mongoose.ConnectOptions); 
+        await mongoose.connect(connectionString);
         console.log("Connected to MongoDB");
+
+        mongoose.connection.on("error", (error) => {
+            console.error("MongoDB connection error:", error);
+        })
     } catch (error) {
-        if (error instanceof Error) {
-            console.error(`Failed to connect to MongoDB: ${error.message}`);
-        } else {
-            console.error("Failed to connect to MongoDB: Unknown error");
-        }
-        throw error; 
+       console.error(`Failed to connect to MongoDB: ${(error as Error).message}`);
+    process.exit(1);
     }
 }
 

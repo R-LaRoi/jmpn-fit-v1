@@ -17,7 +17,7 @@ export default function loginForm() {
     console.log('Logging in with:', email, password);
 
     try {
-      const response = await fetch('your-backend-api/login', {
+      const response = await fetch('http://localhost:8081/backend/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

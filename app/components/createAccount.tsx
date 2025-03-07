@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     textTransform: 'uppercase',
     fontWeight: 'bold',
-    padding: 10,
+
   },
 });
