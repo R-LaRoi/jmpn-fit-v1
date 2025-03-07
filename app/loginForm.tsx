@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { globalStyles } from '../globalStyles';
-
+import { globalStyles } from './globalStyles';
+import { router } from 'expo-router';
 
 export default function loginForm() {
   const [email, setEmail] = useState('');
@@ -41,6 +41,7 @@ export default function loginForm() {
 
     // Simulate success for now.
     Alert.alert('Success', 'Simulated Login successful!');
+    router.replace('./dailyView');
 
   };
 

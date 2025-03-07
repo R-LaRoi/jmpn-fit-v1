@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import LoginForm from "./components/loginForm";
+import LoginForm from "./loginForm";
 import CreateAccount from "./components/createAccount";
 import { globalStyles } from "./globalStyles";
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-
+import { router } from 'expo-router';
 
 export default function CreateAccount() {
   const [firstName, setFirstName] = useState('');
@@ -23,6 +23,7 @@ export default function CreateAccount() {
 
     //Simulate success for now.
     Alert.alert('Success', 'Account created!');
+    router.replace('./loginForm');
   };
 
   return (
