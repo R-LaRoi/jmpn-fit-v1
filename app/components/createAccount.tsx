@@ -1,45 +1,41 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-
 import { router } from 'expo-router';
 import axios from 'axios';
+
 export default function CreateAccount() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-
-  async function handleCreateAccount() {
-
+  const handleCreateAccount = async () => {
     if (!firstName || !lastName || !email || !password) {
       Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
 
+    try {
+      const response = await axios.post('http://localhost:8081/users', {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
 
-    await axios.post('http://localhost:8081/users', { firstName, lastName, email, password }).then((response) => {
       console.log(response.data);
-      alert("success")
-
-    })
-
-
-    // Simulate account creation logic
-    console.log('Creating account with:', firstName, lastName, email, password);
-    // Replace with your actual API call
-    // ...
-
-    //Simulate success for now.
-    Alert.alert('Success', 'Account created!');
-    router.replace('./loginForm');
+      Alert.alert('Success', 'Account created!');
+      router.replace('./loginForm');
+    } catch (error) {
+      console.error('Account creation error:', error);
+      Alert.alert('Error', 'Failed to create account. Please try again.');
+    }
   };
 
   return (
     <KeyboardAwareScrollView>
-      <View >
+      <View>
         <Text style={styles.title}>Create Account</Text>
         <TextInput
           style={styles.input}
@@ -69,15 +65,13 @@ export default function CreateAccount() {
           onChangeText={setPassword}
         />
 
-
         <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAwareScrollView>
   );
-};
-
+}
 
 const styles = StyleSheet.create({
   title: {
@@ -89,15 +83,14 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 0.5,
     height: 48,
-    borderBottomColor: "#8e93a1",
+    borderBottomColor: '#8e93a1',
     marginBottom: 30,
   },
   button: {
-    backgroundColor: "darkmagenta",
+    backgroundColor: 'darkmagenta',
     height: 50,
     marginBottom: 20,
-    justifyContent: "center",
-
+    justifyContent: 'center',
     borderRadius: 15,
   },
   buttonText: {
@@ -109,4 +102,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
