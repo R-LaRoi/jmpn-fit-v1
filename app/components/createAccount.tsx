@@ -9,12 +9,30 @@ export default function CreateAccount() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const validateEmail = (email: string) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
 
   const handleCreateAccount = async () => {
     if (!firstName || !lastName || !email || !password) {
       Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
+
+    if (!validateEmail(email)) {
+      Alert.alert('Error', 'Please enter a valid email address.');
+      return;
+    }
+
+    if (password.length < 8) {
+      Alert.alert('Error', 'Password must be at least 8 characters long.');
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
       const response = await axios.post('http://localhost:8081/users', {

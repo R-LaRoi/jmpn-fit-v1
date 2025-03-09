@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-app.post("/backend/createRoutine", async (req, res) => {
+app.post("/api/createRoutine", async (req, res) => {
   const { userId, date, weekday, duration, type, exercises, level } = req.body;
 
   try {
