@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "backend/routes/auth.js", "backend/config/db.js", "backend/routes/userRoute.js", "backend/routes/routineRoute.js"  ]
+, "backend/routes/auth.js", "backend/config/db.js", "backend/routes/userRoute.js", "backend/routes/routineRoute.js", "backend/models/routineSchema.js", "backend/models/userSchema.js"  ]
 }

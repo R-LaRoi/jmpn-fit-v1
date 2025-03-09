@@ -4,83 +4,100 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { router } from 'expo-router';
 import axios from 'axios';
 
+
+
 export default function RegisterUser() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [verifyName, setVerifyName] = useState(false);
+  const [verifyEmail, setverifyEmail] = useState(false);
+  const [verifyPassword, setVerifyPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const validateEmail = (email: string) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  };
 
-  const handleRegisterUser = async () => {
-    if (!firstName || !lastName || !email || !password) {
-      Alert.alert('Error', 'Please fill in all fields.');
-      return;
+  function handleName(inputName: string) {
+    setUserName(inputName);
+    setVerifyName(false);
+    if (inputName.length > 1) {
+      setVerifyName(true);
     }
 
-    if (!validateEmail(email)) {
-      Alert.alert('Error', 'Please enter a valid email address.');
+  }
+
+  function handleEmail(inputEmail: string) {
+
+    setEmail(inputEmail);
+    setverifyEmail(false);
+    if (/\S+@\S+\.\S+/.test(inputEmail)) {
+      setverifyEmail(true);
+    }
+  }
+
+  function handlePassword(inputPassword: string) {
+
+    setPassword(inputPassword);
+    setVerifyPassword(false);
+    if (inputPassword.length > 7) {
+      setVerifyPassword(true);
+    }
+  }
+
+  function handleRegisterUser() {
+    if (!verifyName || !verifyEmail || !verifyPassword) {
+      Alert.alert('Error', 'Please fill in all required fields.');
       return;
+    }
+    const userData = {
+      username: userName,
+      email: email,
+      password: password,
     }
 
-    if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters long.');
-      return;
-    }
+    axios.post('http://localhost:8081/register_user', userData)
+      .then((response) => {
+        console.log(response.data);
+        Alert.alert('Success', 'User registered successfully!');
+        router.replace('./loginForm');
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+
+
 
     setIsLoading(true);
 
-    try {
-      const response = await axios.post('http://localhost:8081/users', {
-        firstName,
-        lastName,
-        email,
-        password,
-      });
 
-      console.log(response.data);
-      Alert.alert('Success', 'Account created!');
-      router.replace('./loginForm');
-    } catch (error) {
-      console.error('Account creation error:', error);
-      Alert.alert('Error', 'Failed to create account. Please try again.');
-    }
-  };
 
+
+  }
   return (
     <KeyboardAwareScrollView>
       <View>
         <Text style={styles.title}>Create Account</Text>
         <TextInput
           style={styles.input}
-          placeholder="First Name"
-          value={firstName}
-          onChangeText={setFirstName}
+          placeholder=" Name"
+          value={userName}
+          onChangeText={handleName}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Last Name"
-          value={lastName}
-          onChangeText={setLastName}
-        />
+
         <TextInput
           style={styles.input}
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={handleEmail}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           secureTextEntry
           value={password}
-          onChangeText={setPassword}
+          onChangeText={handlePassword}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleRegisterUser}>
@@ -90,6 +107,7 @@ export default function RegisterUser() {
     </KeyboardAwareScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   title: {
