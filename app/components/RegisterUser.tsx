@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { router } from 'expo-router';
 import axios from 'axios';
 
-export default function CreateAccount() {
+export default function RegisterUser() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -16,7 +16,7 @@ export default function CreateAccount() {
     return re.test(email);
   };
 
-  const handleCreateAccount = async () => {
+  const handleRegisterUser = async () => {
     if (!firstName || !lastName || !email || !password) {
       Alert.alert('Error', 'Please fill in all fields.');
       return;
@@ -83,7 +83,7 @@ export default function CreateAccount() {
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
+        <TouchableOpacity style={styles.button} onPress={handleRegisterUser}>
           <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
       </View>

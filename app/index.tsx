@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import LoginForm from "./loginForm";
-import CreateAccount from "./components/createAccount";
+import CreateAccount from "./components/RegisterUser";
 import { globalStyles } from "./globalStyles";
 
 export default function Index() {
