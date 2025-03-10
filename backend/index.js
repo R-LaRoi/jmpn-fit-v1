@@ -5,7 +5,7 @@ import cors from "cors";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-
+import mongoose from "mongoose";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 8000;
@@ -63,11 +63,24 @@ app.post("/login-user", async (req, res) => {
         { expiresIn: "1h" }
       );
 
+      console.log("Active user ID:", activeUser._id.toString());
+      console.log(
+        "Response:",
+        JSON.stringify({
+          status: "ok",
+          data: token,
+          userType: "user",
+          username: activeUser.username,
+          userId: activeUser._id.toString(),
+        })
+      );
+
       res.json({
         status: "ok",
         data: token,
         userType: "user",
         username: activeUser.username,
+        userId: activeUser._id.toString(),
       });
     } else {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -77,6 +90,58 @@ app.post("/login-user", async (req, res) => {
   }
 });
 
+app.post("/save-routine", async (req, res) => {
+  console.log("Received data:", req.body);
+  const {
+    userId: userIdString,
+    duration,
+    type,
+    level,
+    date,
+    weekday,
+    exercises,
+  } = req.body;
+
+  if (!userIdString) {
+    return res.status(400).json({ error: "userId is required" });
+  }
+
+  try {
+    let userId;
+    try {
+      userId = mongoose.Types.ObjectId(userIdString);
+    } catch (castError) {
+      return res.status(400).json({ error: "Invalid userId format" });
+    }
+    const result = await User.updateOne(
+      { _id: userId },
+      {
+        $push: {
+          routines: {
+            duration,
+            type,
+            level,
+            date,
+            weekday,
+            exercises,
+          },
+        },
+      }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ message: "Routine saved successfully!" });
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return res.status(400).json({ error: "Invalid userId format" });
+    }
+    console.error("Error saving routine:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
 // Start Server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

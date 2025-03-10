@@ -5,7 +5,6 @@ import WeeklyView from '../(tabs)/weeklyView';
 import MonthlyView from '../(tabs)/monthlyView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-
 const Tab = createMaterialTopTabNavigator();
 
 function WorkoutHistoryTabs() {
@@ -18,52 +17,64 @@ function WorkoutHistoryTabs() {
 }
 
 export default function RoutineForm() {
-  const [inputText, setInputText] = useState('');
-  const [duration, setDuration] = useState('');
-  const [type, setType] = useState('');
-  const [level, setLevel] = useState('');
+  const [formData, setFormData] = useState({
+    duration: '',
+    type: '',
+    level: '',
+    exercises: '',
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = useState('');
   const [weekday, setWeekday] = useState('');
-  const [exercises, setExercises] = useState('');
-  const [userId, setUserId] = useState<string | null>(null)
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUserId = async () => {
+    const fetchInitialData = async () => {
       try {
         const storedUserId = await AsyncStorage.getItem('userId');
         if (storedUserId) {
           setUserId(storedUserId);
+        } else {
+          console.log('No userId found in AsyncStorage');
         }
+
+        const currentDate = new Date();
+        const options: Intl.DateTimeFormatOptions = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        };
+
+        setDate(currentDate.toLocaleDateString(undefined, options));
+        setWeekday(currentDate.toLocaleDateString(undefined, { weekday: 'long' }));
       } catch (error) {
-        console.error('Error fetching userId:', error);
+        console.error('Error fetching initial data:', error);
       }
     };
-    fetchUserId();
-    const currentDate = new Date();
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-    setDate(currentDate.toLocaleDateString(undefined, options));
-    setWeekday(currentDate.toLocaleDateString(undefined, { weekday: 'long' }));
+    fetchInitialData();
   }, []);
 
-  const handleSubmit = async () => {
-    if (inputText.trim() === '') {
-      Alert.alert('Error', 'Please enter a routine name.');
-      return;
-    }
+  const handleChange = (name: string, value: string) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
+  async function handleSaveRoutine() {
+    const { duration, type, level, exercises } = formData;
 
     if (!userId) {
       Alert.alert('Error', 'User ID not found. Please log in.');
       return;
     }
 
+    if (!duration || !type || !level || !exercises || exercises.length === 0) {
+      Alert.alert('Error', 'Please fill in all required fields.');
+      return;
+    }
+
     const routineData = {
       userId: userId,
-      routineName: inputText,
       duration: duration,
       type: type,
       level: level,
@@ -72,58 +83,60 @@ export default function RoutineForm() {
       exercises: exercises,
     };
 
-    try {
-      // Replace 'YOUR_API_ENDPOINT' with your actual MongoDB API endpoint
-      const response = await axios.post('YOUR_API_ENDPOINT', routineData);
-      Alert.alert('Submitted', 'Routine saved successfully!');
-      setInputText('');
-      setDuration('');
-      setType('');
-      setLevel('');
-      setExercises('');
-    } catch (error) {
-      console.error('Error submitting routine:', error);
-      Alert.alert('Error', 'Failed to save routine. Please try again.');
-    }
-  };
+    console.log('Data being sent:', routineData);
+    setIsLoading(true);
+
+    axios
+      .post('http://localhost:8000/save-routine', routineData)
+      .then((response) => {
+        console.log(response.data);
+        Alert.alert('Submitted', 'Routine saved successfully!');
+        setFormData({
+          duration: '',
+          type: '',
+          level: '',
+          exercises: '',
+        });
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        Alert.alert('Error', 'Failed to save routine. Please try again.');
+        setIsLoading(false);
+      });
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Routine Form</Text>
       <TextInput
         style={styles.input}
-        placeholder="Routine Name"
-        value={inputText}
-        onChangeText={setInputText}
+        placeholder="Type (e.g., Cardio, Strength)"
+        value={formData.type}
+        onChangeText={(text) => handleChange('type', text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Duration (e.g., 30 min)"
-        value={duration}
-        onChangeText={setDuration}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Type (e.g., Cardio, Strength)"
-        value={type}
-        onChangeText={setType}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Level (e.g., Beginner, Intermediate)"
-        value={level}
-        onChangeText={setLevel}
+        value={formData.duration}
+        onChangeText={(text) => handleChange('duration', text)}
       />
       <TextInput
         style={styles.input}
         placeholder="Exercises (e.g., Pushups, Squats)"
-        value={exercises}
-        onChangeText={setExercises}
+        value={formData.exercises}
+        onChangeText={(text) => handleChange('exercises', text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Level (e.g., Beginner, Intermediate)"
+        value={formData.level}
+        onChangeText={(text) => handleChange('level', text)}
       />
       <Text>Date: {date}</Text>
       <Text>Day: {weekday}</Text>
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.button} onPress={handleSaveRoutine}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
       <WorkoutHistoryTabs />
@@ -134,7 +147,7 @@ export default function RoutineForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
@@ -145,19 +158,21 @@ const styles = StyleSheet.create({
   input: {
     borderBottomWidth: 0.5,
     height: 48,
-    borderBottomColor: "#8e93a1",
+    borderBottomColor: '#8e93a1',
     marginBottom: 30,
   },
   button: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 10,
+    backgroundColor: 'darkmagenta',
+    height: 50,
+    marginBottom: 20,
+    justifyContent: 'center',
+    borderRadius: 15,
   },
   buttonText: {
-    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#fff',
+    textTransform: 'uppercase',
     fontWeight: 'bold',
-    fontSize: 16,
   },
 });

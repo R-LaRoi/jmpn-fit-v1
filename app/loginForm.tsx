@@ -11,6 +11,13 @@ export default function loginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  /*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Submits a login request to the server with the current email and password.
+   * If the response is successful, stores the token, isLoggedIn, userType, username, and userId in AsyncStorage,
+   * and navigates to the dailyView.
+   */
+  /******  c5820d81-1587-4593-9bd0-72a4e585c92c  *******/
   function loginUser() {
 
     console.log(email, password);
@@ -22,12 +29,18 @@ export default function loginForm() {
     console.log('Logging in with:', email, password);
     axios.post('http://localhost:8000/login-user', userData).then(res => {
       console.log(res.data);
+      console.log('Full response:', res); // Log the entire response
+      console.log('Response data:', res.data); // Log res.data
+
+
       if (res.data.status == 'ok') {
         Alert.alert('Logged In Successfull');
         AsyncStorage.setItem('token', res.data.data);
         AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
         AsyncStorage.setItem('userType', res.data.userType)
         AsyncStorage.setItem('username', res.data.username);
+        AsyncStorage.setItem('userId', res.data.userId);
+        console.log('userId stored:', res.data.userId);
         router.replace('./dailyView');
 
 
