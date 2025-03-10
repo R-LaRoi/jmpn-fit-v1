@@ -27,6 +27,7 @@ export default function loginForm() {
         AsyncStorage.setItem('token', res.data.data);
         AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
         AsyncStorage.setItem('userType', res.data.userType)
+        AsyncStorage.setItem('username', res.data.username);
         router.replace('./dailyView');
 
 
@@ -93,11 +94,7 @@ export default function loginForm() {
         </TouchableOpacity>
         <Text>Google</Text>
       </View>
-
     </View>
-
-
-
 
   );
 

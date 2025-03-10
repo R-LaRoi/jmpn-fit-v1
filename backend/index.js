@@ -63,7 +63,12 @@ app.post("/login-user", async (req, res) => {
         { expiresIn: "1h" }
       );
 
-      res.json({ status: "ok", data: token, userType: "user" });
+      res.json({
+        status: "ok",
+        data: token,
+        userType: "user",
+        username: activeUser.username,
+      });
     } else {
       return res.status(401).json({ error: "Invalid credentials" });
     }
