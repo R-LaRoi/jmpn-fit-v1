@@ -20,7 +20,7 @@ export default function loginForm() {
     };
 
     console.log('Logging in with:', email, password);
-    axios.post('http://localhost:8081/login-user', userData).then(res => {
+    axios.post('http://localhost:8000/login-user', userData).then(res => {
       console.log(res.data);
       if (res.data.status == 'ok') {
         Alert.alert('Logged In Successfull');
@@ -28,11 +28,7 @@ export default function loginForm() {
         AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
         AsyncStorage.setItem('userType', res.data.userType)
         router.replace('./dailyView');
-        // if(res.data.userType=="Admin"){
-        //    navigation.navigate('AdminScreen');
-        // }else{
-        //   navigation.navigate('Home');
-        // }
+
 
       }
     });

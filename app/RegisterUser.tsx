@@ -54,7 +54,7 @@ export default function RegisterUser() {
       password: password,
     }
 
-    axios.post('http://localhost:8081/register_user', userData)
+    axios.post('http://localhost:8000/register', userData)
       .then((response) => {
         console.log(response.data);
         Alert.alert('Success', 'User registered successfully!');
@@ -62,6 +62,7 @@ export default function RegisterUser() {
       })
       .catch((error) => {
         console.log(error);
+        Alert.alert('Error', 'Registration failed.');
       })
 
 
