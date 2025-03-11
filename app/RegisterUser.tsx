@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { router } from 'expo-router';
 import axios from 'axios';
 
 
-
 export default function RegisterUser() {
+
+  console.log("Register user component rendered");
+
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -44,10 +46,11 @@ export default function RegisterUser() {
   }
 
   function handleRegisterUser() {
-    if (!verifyName || !verifyEmail || !verifyPassword) {
-      Alert.alert('Error', 'Please fill in all required fields.');
-      return;
-    }
+    console.log('handle register user');
+    // if (!verifyName || !verifyEmail || !verifyPassword) {
+    //   Alert.alert('Error', 'Please fill in all required fields.');
+    //   return;
+    // }
     const userData = {
       username: userName,
       email: email,
@@ -77,7 +80,8 @@ export default function RegisterUser() {
   return (
     <KeyboardAwareScrollView>
       <View>
-        <Text style={styles.title}>Create Account</Text>
+        <Text
+        >Create Account</Text>
         <TextInput
           style={styles.input}
           placeholder=" Name"
@@ -101,9 +105,10 @@ export default function RegisterUser() {
           onChangeText={handlePassword}
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleRegisterUser}>
-          <Text style={styles.buttonText}>Create Account</Text>
+        <TouchableOpacity onPress={handleRegisterUser}>
+          <Text>Sign Up</Text>
         </TouchableOpacity>
+        {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
       </View>
     </KeyboardAwareScrollView>
   );

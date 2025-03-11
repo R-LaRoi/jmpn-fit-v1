@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
+  console.log("Server: /register endpoint called");
   const { username, email, password } = req.body;
 
   const activeUser = await User.findOne({ email });
@@ -46,6 +47,7 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 app.post("/login-user", async (req, res) => {
   const { email, password } = req.body;
 
