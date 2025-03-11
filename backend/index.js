@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./config/db.js";
 import { User } from "./models/userSchema.js";
+import { Routine } from "./models/routineSchema.js";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -90,56 +91,80 @@ app.post("/login-user", async (req, res) => {
   }
 });
 
-app.post("/save-routine", async (req, res) => {
-  console.log("Received data:", req.body);
-  const {
-    userId: userIdString,
-    duration,
-    type,
-    level,
-    date,
-    weekday,
-    exercises,
-  } = req.body;
-
-  if (!userIdString) {
-    return res.status(400).json({ error: "userId is required" });
+function createObjectId(idString) {
+  if (mongoose.isValidObjectId(idString)) {
+    return new mongoose.Types.ObjectId(idString);
+  } else {
+    return null;
   }
+}
 
+app.post("/save-routine", async (req, res) => {
   try {
-    let userId;
-    try {
-      userId = mongoose.Types.ObjectId(userIdString);
-    } catch (castError) {
+    console.log("Received data:", req.body);
+    const {
+      userId: userIdString,
+      duration,
+      type,
+      level,
+      date,
+      weekday,
+      exercises,
+    } = req.body;
+
+    if (!userIdString) {
+      return res.status(400).json({ error: "userId is required" });
+    }
+
+    if (!mongoose.isValidObjectId(userIdString)) {
       return res.status(400).json({ error: "Invalid userId format" });
     }
-    const result = await User.updateOne(
-      { _id: userId },
-      {
-        $push: {
-          routines: {
-            duration,
-            type,
-            level,
-            date,
-            weekday,
-            exercises,
-          },
-        },
-      }
+
+    // Validate exercises format
+    if (!exercises || !Array.isArray(exercises)) {
+      return res.status(400).json({
+        error: "exercises must be an array of strings",
+      });
+    }
+
+    // Ensure all exercises are strings
+    const exercisesArray = exercises.map((ex) =>
+      typeof ex === "string" ? ex : String(ex)
     );
 
-    if (result.modifiedCount === 0) {
+    const userId = new mongoose.Types.ObjectId(userIdString);
+
+    // Create the new routine object with validated data
+    const newRoutine = {
+      duration: String(duration),
+      type: String(type),
+      level: String(level),
+      date: String(date),
+      weekday: String(weekday),
+      exercises: exercisesArray,
+    };
+
+    console.log("Formatted routine to save:", newRoutine);
+
+    // Find the user first
+    const user = await User.findById(userId);
+    if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ message: "Routine saved successfully!" });
+    // Add the routine to the user's routines array
+    user.routines.push(newRoutine);
+    console.log("User routines before save:", user.routines);
+    // Save the user document
+    await user.save();
+
+    return res.status(200).json({
+      message: "Routine saved successfully!",
+      routine: newRoutine,
+    });
   } catch (error) {
-    if (error instanceof mongoose.Error.CastError) {
-      return res.status(400).json({ error: "Invalid userId format" });
-    }
     console.error("Error saving routine:", error);
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 // Start Server

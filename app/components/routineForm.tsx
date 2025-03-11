@@ -56,7 +56,7 @@ export default function RoutineForm() {
     fetchInitialData();
   }, []);
 
-  const handleChange = (name: string, value: string) => {
+  async function handleChange(name: string, value: string) {
     setFormData({ ...formData, [name]: value });
   };
 
@@ -73,6 +73,9 @@ export default function RoutineForm() {
       return;
     }
 
+    // Convert exercises string to array of strings
+    const exercisesArray = exercises.split('\n').map(exercise => exercise.trim());
+
     const routineData = {
       userId: userId,
       duration: duration,
@@ -80,31 +83,32 @@ export default function RoutineForm() {
       level: level,
       date: date,
       weekday: weekday,
-      exercises: exercises,
+      exercises: exercisesArray,
     };
 
     console.log('Data being sent:', routineData);
     setIsLoading(true);
 
-    axios
-      .post('http://localhost:8000/save-routine', routineData)
-      .then((response) => {
-        console.log(response.data);
-        Alert.alert('Submitted', 'Routine saved successfully!');
-        setFormData({
-          duration: '',
-          type: '',
-          level: '',
-          exercises: '',
-        });
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        Alert.alert('Error', 'Failed to save routine. Please try again.');
-        setIsLoading(false);
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/save-routine',
+        routineData
+      );
+      console.log(response.data);
+      Alert.alert('Submitted', 'Routine saved successfully!');
+      setFormData({
+        duration: '',
+        type: '',
+        level: '',
+        exercises: '',
       });
-  }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to save routine. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -123,7 +127,8 @@ export default function RoutineForm() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Exercises (e.g., Pushups, Squats)"
+        placeholder="Exercises (e.g., Pushups, Squats)\n(Enter each exercise on a new line)"
+        multiline={true}
         value={formData.exercises}
         onChangeText={(text) => handleChange('exercises', text)}
       />
