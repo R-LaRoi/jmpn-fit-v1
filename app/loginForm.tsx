@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { globalStyles } from './globalStyles';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, Image } from 'react-native';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Video, ResizeMode } from 'expo-av';
 
-
-
+const { width, height } = Dimensions.get('window');
 export default function loginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function loginUser() {
+  // const videoRef = useRef(null);
 
+  function loginUser() {
+    const { width, height } = Dimensions.get('window');
     console.log(email, password);
     const userData = {
       email: email,
@@ -48,86 +50,158 @@ export default function loginForm() {
   }, [])
 
 
+
   return (
-    <View>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
+    <>
+      {/* <Video
+          source={{ uri: '../assets/videos/louvre.mp4' }}
+          style={styles.video}
+          resizeMode={ResizeMode.CONTAIN}
+          isMuted
+          isLooping
+          shouldPlay
+        /> */}
 
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
+      <Image
+        source={require('@/assets/images/jmpn.jpg')}
+        style={styles.image}
+        resizeMode="cover"
       />
-      <TextInput
+      <LinearGradient
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        style={styles.gradient}
+        locations={[0.5, 1]} />
+      <LinearGradient
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        style={styles.gradient2}
+        locations={[0.5, 1]} />
 
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity style={styles.button} onPress={loginUser}>
-        <Text style={globalStyles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-
-      <View style={{ padding: 15 }}>
-        <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#919191' }}>
-          ----Or Continue as----
-        </Text>
-      </View>
-      <View >
-
+      <View>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        <TouchableOpacity onPress={loginUser}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.button}
+          style={styles.joinNowLink}
           onPress={() => router.replace('./RegisterUser')}
         >
-          <Text style={styles.buttonText}>Create Account</Text>
+          <Text style={styles.joinNowText}>Ready to JMPN? Join Now.</Text>
         </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <TouchableOpacity
 
-          onPress={() => alert('Coming Soon')}>
 
-        </TouchableOpacity>
-        <Text>Google</Text>
       </View>
-    </View>
+
+
+    </>
 
   );
 
 }
+
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+
+  image: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+  },
+  gradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: height,
+  },
+  gradient2: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: height,
+  },
+
+  contentContainer: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'space-between',
+    zIndex: 1,
+  },
+  messageContainer: {
+    marginTop: 60,
+    alignItems: 'center',
+  },
+  headingText: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: 'white',
     textAlign: 'center',
+  },
+  subheadingText: {
+    fontSize: 38,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  descriptionText: {
+    fontSize: 18,
+    color: '#e0e0e0',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  divider: {
+    width: 50,
+    height: 3,
+    backgroundColor: '#8BC34A',
+    marginVertical: 10,
+  },
+  formContainer: {
+    width: '100%',
+    marginBottom: 40,
   },
   input: {
-    borderBottomWidth: 0.5,
-    height: 48,
-    borderBottomColor: '#8e93a1',
-    marginBottom: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 15,
+    fontSize: 16,
   },
   button: {
-    backgroundColor: 'darkmagenta',
-    height: 50,
-    marginBottom: 20,
-    justifyContent: 'center',
-    borderRadius: 15,
+    backgroundColor: '#8BC34A',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 15,
   },
   buttonText: {
-    fontSize: 20,
-    textAlign: 'center',
-    color: '#fff',
-    textTransform: 'uppercase',
+    color: 'white',
+    fontSize: 18,
     fontWeight: 'bold',
-    padding: 10,
   },
+  joinNowLink: {
+    alignSelf: 'center',
+    marginTop: 5,
+    marginBottom: 15,
+  },
+  joinNowText: {
+    color: 'white',
+    fontSize: 12,
+    textAlign: 'center',
+  }
+
 });
