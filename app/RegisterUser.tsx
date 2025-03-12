@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, Dimensions, Image } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { router } from 'expo-router';
 import axios from 'axios';
-
+import { LinearGradient } from 'expo-linear-gradient';
+const { width, height } = Dimensions.get('window');
 
 export default function RegisterUser() {
 
@@ -68,27 +69,34 @@ export default function RegisterUser() {
         Alert.alert('Error', 'Registration failed.');
       })
 
-
-
-
     setIsLoading(true);
-
-
-
 
   }
   return (
-    <KeyboardAwareScrollView>
-      <View>
-        <Text
-        >Create Account</Text>
+    <View style={styles.contentContainer}>
+      <Image
+        source={require('@/assets/images/logo.png')}
+        style={styles.image}
+        resizeMode="contain"
+      />
+      <LinearGradient
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        style={styles.gradient}
+        locations={[0.4, 1]}
+      />
+      <LinearGradient
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        style={styles.gradient2}
+        locations={[0.7, 1]}
+      />
+      <KeyboardAwareScrollView contentContainerStyle={styles.formContainer}>
+        <Text style={styles.headingText}>Create Account</Text>
         <TextInput
           style={styles.input}
-          placeholder=" Name"
+          placeholder="Name"
           value={userName}
           onChangeText={handleName}
         />
-
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -104,43 +112,70 @@ export default function RegisterUser() {
           value={password}
           onChangeText={handlePassword}
         />
-
-        <TouchableOpacity onPress={handleRegisterUser}>
-          <Text>Sign Up</Text>
+        <TouchableOpacity style={styles.button} onPress={handleRegisterUser}>
+          <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
-        {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
-      </View>
-    </KeyboardAwareScrollView>
+        {isLoading && <ActivityIndicator size="large" color="white" />}
+      </KeyboardAwareScrollView>
+    </View>
   );
 }
 
-
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+
+  image: {
+    width: '60%',
+    // height: '100%',
+    position: 'absolute',
+  },
+  gradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: height,
+  },
+  gradient2: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: height,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'flex-end',
+  },
+  headingText: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: 'white',
     textAlign: 'center',
+    marginBottom: 20,
+  },
+  formContainer: {
+    width: '100%',
+    justifyContent: 'flex-end',
   },
   input: {
-    borderBottomWidth: 0.5,
-    height: 48,
-    borderBottomColor: '#8e93a1',
-    marginBottom: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 50,
+    padding: 15,
+    marginBottom: 15,
+    fontSize: 16,
+    color: 'black'
   },
   button: {
-    backgroundColor: 'darkmagenta',
-    height: 50,
-    marginBottom: 20,
-    justifyContent: 'center',
-    borderRadius: 15,
+    backgroundColor: '#292929',
+    paddingVertical: 15,
+    borderRadius: 50,
+    alignItems: 'center',
+    marginBottom: 15,
   },
   buttonText: {
-    fontSize: 20,
-    textAlign: 'center',
-    color: '#fff',
-    textTransform: 'uppercase',
+    color: 'white',
+    fontSize: 18,
     fontWeight: 'bold',
-
   },
 });

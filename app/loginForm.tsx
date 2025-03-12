@@ -6,6 +6,7 @@ import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Video, ResizeMode } from 'expo-av';
 
+
 const { width, height } = Dimensions.get('window');
 export default function loginForm() {
   const [email, setEmail] = useState('');
@@ -34,7 +35,6 @@ export default function loginForm() {
         AsyncStorage.setItem('userId', res.data.userId);
         console.log('userId stored:', res.data.userId);
         router.replace('./dailyView');
-
 
       }
     });
@@ -67,16 +67,23 @@ export default function loginForm() {
         style={styles.image}
         resizeMode="cover"
       />
+      <Image
+        source={require('@/assets/images/logo.png')}
+        style={styles.image2}
+        resizeMode="contain"
+      />
+
       <LinearGradient
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        colors={['rgba(252, 255, 255, 0)', 'rgba(252, 255, 255, 1)']}
         style={styles.gradient}
         locations={[0.5, 1]} />
       <LinearGradient
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        colors={['rgba(252, 255, 255, 0)', 'rgba(252, 255, 255, 1)']}
         style={styles.gradient2}
-        locations={[0.5, 1]} />
+        locations={[0.3, 1]} />
 
-      <View>
+      <View style={styles.formContainer}>
+
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -92,7 +99,7 @@ export default function loginForm() {
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity onPress={loginUser}>
+        <TouchableOpacity style={styles.button} onPress={loginUser}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
 
@@ -106,7 +113,6 @@ export default function loginForm() {
 
       </View>
 
-
     </>
 
   );
@@ -119,6 +125,17 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
+    borderRadius: 30,
+    borderColor: '#4705ff',
+    borderWidth: 15,
+
+  },
+  image2: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    zIndex: 2,
+
   },
   gradient: {
     position: 'absolute',
@@ -126,6 +143,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: height,
+    zIndex: 1,
   },
   gradient2: {
     position: 'absolute',
@@ -133,13 +151,18 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     height: height,
+    zIndex: 1,
   },
 
   contentContainer: {
+    backgroundColor: '#4705ff',
     flex: 1,
     padding: 20,
-    justifyContent: 'space-between',
-    zIndex: 1,
+    justifyContent: 'flex-end',
+    zIndex: 9,
+
+
+
   },
   messageContainer: {
     marginTop: 60,
@@ -171,27 +194,34 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   formContainer: {
-    width: '100%',
-    marginBottom: 40,
+    width: '85%',
+    marginTop: 600,
+    zIndex: 2,
+    display: 'flex',
+    justifyContent: 'center',
+    marginLeft: 30,
   },
   input: {
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 8,
+    borderRadius: 50,
     padding: 15,
     marginBottom: 15,
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#8BC34A',
-    paddingVertical: 15,
-    borderRadius: 8,
+    backgroundColor: '#292929',
+    paddingVertical: 5,
+    borderRadius: 50,
     alignItems: 'center',
     marginBottom: 15,
+
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+    backgroundColor: '#292929',
+    padding: 10,
   },
   joinNowLink: {
     alignSelf: 'center',
@@ -199,9 +229,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   joinNowText: {
-    color: 'white',
+    color: '#292929',
     fontSize: 12,
     textAlign: 'center',
+    fontWeight: 'bold',
   }
 
 });
