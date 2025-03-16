@@ -18,10 +18,12 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-    padding: 20,
-    backgroundColor: '#4705ff',
+    justifyContent: "center",
+    alignItems: "center",
+    // padding: 20,
+    // height: '100%',
+    borderColor: 'black',
+
   },
 
 

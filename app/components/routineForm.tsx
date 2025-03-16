@@ -111,38 +111,41 @@ export default function RoutineForm() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Routine Form</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Type (e.g., Cardio, Strength)"
-        value={formData.type}
-        onChangeText={(text) => handleChange('type', text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Duration (e.g., 30 min)"
-        value={formData.duration}
-        onChangeText={(text) => handleChange('duration', text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Exercises (e.g., Pushups, Squats)\n(Enter each exercise on a new line)"
-        multiline={true}
-        value={formData.exercises}
-        onChangeText={(text) => handleChange('exercises', text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Level (e.g., Beginner, Intermediate)"
-        value={formData.level}
-        onChangeText={(text) => handleChange('level', text)}
-      />
-      <Text>Date: {date}</Text>
-      <Text>Day: {weekday}</Text>
+    <View style={styles.pageContainer}>
+      <View style={styles.card}>
+        <Text style={styles.day}>{weekday}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Type (e.g., Cardio, Strength)"
+          value={formData.type}
+          onChangeText={(text) => handleChange('type', text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Duration (e.g., 30 min)"
+          value={formData.duration}
+          onChangeText={(text) => handleChange('duration', text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Exercises (e.g., Pushups, Squats)\n(Enter each exercise on a new line)"
+          multiline={true}
+          value={formData.exercises}
+          onChangeText={(text) => handleChange('exercises', text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Level (e.g., Beginner, Intermediate)"
+          value={formData.level}
+          onChangeText={(text) => handleChange('level', text)}
+        />
+        <Text>Date: {date}</Text>
 
+
+
+      </View>
       <TouchableOpacity style={styles.button} onPress={handleSaveRoutine}>
-        <Text style={styles.buttonText}>Submit</Text>
+        <Text style={styles.buttonText}>SAVE Workout</Text>
       </TouchableOpacity>
       <WorkoutHistoryTabs />
     </View>
@@ -150,9 +153,17 @@ export default function RoutineForm() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  pageContainer: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#1b1b1b',
+    padding: 20,
+
+  },
+  card: {
+    backgroundColor: '#292929',
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
@@ -165,9 +176,10 @@ const styles = StyleSheet.create({
     height: 48,
     borderBottomColor: '#8e93a1',
     marginBottom: 30,
+    color: 'white',
   },
   button: {
-    backgroundColor: 'darkmagenta',
+    backgroundColor: '#F9004C',
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
@@ -180,4 +192,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: 'bold',
   },
+  day: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  }
 });

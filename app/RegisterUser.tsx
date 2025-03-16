@@ -74,60 +74,57 @@ export default function RegisterUser() {
   }
   return (
     <View style={styles.contentContainer}>
-      <Image
-        source={require('@/assets/images/logo.png')}
-        style={styles.image}
-        resizeMode="contain"
-      />
+
       <LinearGradient
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
         style={styles.gradient}
         locations={[0.4, 1]}
       />
       <LinearGradient
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']}
+        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
         style={styles.gradient2}
         locations={[0.7, 1]}
       />
       <KeyboardAwareScrollView contentContainerStyle={styles.formContainer}>
-        <Text style={styles.headingText}>Create Account</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={userName}
-          onChangeText={handleName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={handleEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={handlePassword}
-        />
-        <TouchableOpacity style={styles.button} onPress={handleRegisterUser}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-        {isLoading && <ActivityIndicator size="large" color="white" />}
+        <View style={styles.card}>
+          <Image
+            source={require('@/assets/images/bl.png')}
+            style={styles.cardImage}
+            resizeMode="contain"
+          />
+          <Text style={styles.headingText}>Create Account</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Name"
+            value={userName}
+            onChangeText={handleName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={handleEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={handlePassword}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleRegisterUser}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+          {isLoading && <ActivityIndicator size="large" color="white" />}
+        </View>
       </KeyboardAwareScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
-  image: {
-    width: '60%',
-    // height: '100%',
-    position: 'absolute',
-  },
   gradient: {
     position: 'absolute',
     left: 0,
@@ -142,21 +139,33 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: height,
   },
+  bgImg: {
+    justifyContent: 'flex-end',
+    width: '50%',
+  },
   contentContainer: {
     flex: 1,
-    padding: 20,
+    // padding: 20,
     justifyContent: 'flex-end',
+  },
+
+  cardImage: {
+    width: '100%',
+    height: '100%',
+    marginBottom: 0,
   },
   headingText: {
     fontSize: 32,
     fontWeight: '600',
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
     marginBottom: 20,
   },
   formContainer: {
-    width: '100%',
-    justifyContent: 'flex-end',
+
+    padding: 30,
+    justifyContent: 'center',
+
   },
   input: {
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
@@ -164,7 +173,8 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 15,
     fontSize: 16,
-    color: 'black'
+    color: 'black',
+    width: '100%',
   },
   button: {
     backgroundColor: '#292929',
@@ -172,6 +182,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     marginBottom: 15,
+    width: '100%',
   },
   buttonText: {
     color: 'white',

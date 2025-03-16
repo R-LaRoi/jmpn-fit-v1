@@ -1,5 +1,5 @@
 import { View, Text, Alert } from "react-native";
-import { globalStyles } from "../globalStyles";
+
 import { router } from "expo-router";
 export default function LogoutButton() {
 
@@ -13,7 +13,7 @@ export default function LogoutButton() {
 
   return (
     <View>
-      <Text style={globalStyles.button} onPress={logout}>Logout</Text>
+      <Text onPress={logout}>Logout</Text>
     </View>
   );
 }

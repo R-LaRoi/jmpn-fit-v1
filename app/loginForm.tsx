@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, Image } from 'react-native';
+import Video from 'react-native-video';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Video, ResizeMode } from 'expo-av';
+
 
 
 const { width, height } = Dimensions.get('window');
@@ -53,34 +54,39 @@ export default function loginForm() {
 
   return (
     <>
-      {/* <Video
-          source={{ uri: '../assets/videos/louvre.mp4' }}
-          style={styles.video}
-          resizeMode={ResizeMode.CONTAIN}
-          isMuted
-          isLooping
-          shouldPlay
-        /> */}
 
-      <Image
+      <Video
+        source={({ uri: 'https://github.com/user-attachments/assets/73e4ed6e-0dcf-404c-86f7-181313b25c81' })}
+        style={styles.video}
+        resizeMode="contain"
+        muted={true}
+        repeat={true}
+        playInBackground={false}
+        playWhenInactive={false}
+        ignoreSilentSwitch="ignore"
+      />
+      {/* <View style={styles.overlay}>
+        <Text style={styles.overlayText}>JMPN</Text>
+      </View> */}
+      {/* <Image
         source={require('@/assets/images/jmpn.jpg')}
         style={styles.image}
         resizeMode="cover"
-      />
+      /> */}
       <Image
-        source={require('@/assets/images/logo.png')}
+        source={require('@/assets/images/lg.png')}
         style={styles.image2}
         resizeMode="contain"
       />
-
+      {/* 249,0,76 */}
       <LinearGradient
-        colors={['rgba(252, 255, 255, 0)', 'rgba(252, 255, 255, 1)']}
+        colors={['rgba(0,0,0, 0)', 'rgba(0,0,0, 1)']}
         style={styles.gradient}
-        locations={[0.5, 1]} />
-      <LinearGradient
-        colors={['rgba(252, 255, 255, 0)', 'rgba(252, 255, 255, 1)']}
-        style={styles.gradient2}
         locations={[0.3, 1]} />
+      <LinearGradient
+        colors={['rgba(0,0,0, 0)', 'rgba(0,0,0, 1)']}
+        style={styles.gradient2}
+        locations={[0.2, 1]} />
 
       <View style={styles.formContainer}>
 
@@ -109,8 +115,6 @@ export default function loginForm() {
         >
           <Text style={styles.joinNowText}>Ready to JMPN? Join Now.</Text>
         </TouchableOpacity>
-
-
       </View>
 
     </>
@@ -120,21 +124,41 @@ export default function loginForm() {
 }
 
 const styles = StyleSheet.create({
-
-  image: {
+  video: {
     width: '100%',
-    height: '100%',
-    position: 'absolute',
-    borderRadius: 30,
-    borderColor: '#4705ff',
-    borderWidth: 15,
+
 
   },
+  // image: {
+  //   width: '100%',
+  //   height: '100%',
+  //   position: 'absolute',
+  //   borderRadius: 35,
+  //   borderColor: 'white',
+  //   borderWidth: 15,
+
+  // },
   image2: {
     width: '100%',
     height: '100%',
     position: 'absolute',
     zIndex: 2,
+  },
+
+
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  overlayText: {
+    color: 'white',
+    fontSize: 96,
+    fontWeight: 'bold',
 
   },
   gradient: {
@@ -155,14 +179,11 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    backgroundColor: '#4705ff',
+    borderColor: 'black',
+    backgroundColor: 'black',
     flex: 1,
-    padding: 20,
     justifyContent: 'flex-end',
     zIndex: 9,
-
-
-
   },
   messageContainer: {
     marginTop: 60,
@@ -199,7 +220,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     display: 'flex',
     justifyContent: 'center',
-    marginLeft: 30,
+
   },
   input: {
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
@@ -229,7 +250,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   joinNowText: {
-    color: '#292929',
+    color: 'whitesmoke',
     fontSize: 12,
     textAlign: 'center',
     fontWeight: 'bold',
