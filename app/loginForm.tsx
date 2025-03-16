@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Dimensions, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, Dimensions, Image } from 'react-native';
 import Video from 'react-native-video';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
+import { tailwind } from 'nativewind';
 
 const { width, height } = Dimensions.get('window');
 
-export default function loginForm() {
+export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -40,29 +41,29 @@ export default function loginForm() {
     <>
       <Video
         source={{ uri: 'https://github.com/user-attachments/assets/73e4ed6e-0dcf-404c-86f7-181313b25c81' }}
-        style={styles.video}
+        style={{ width: '100%', height: '100%', position: 'absolute' }}
         resizeMode="cover"
         muted
         repeat
       />
       <Image
         source={require('@/assets/images/lg.png')}
-        style={styles.image2}
+        style={{ width: '100%', height: '100%', position: 'absolute', zIndex: 2 }}
         resizeMode="contain"
       />
       <LinearGradient
         colors={['rgba(0,0,0, 0)', 'rgba(0,0,0, 1)']}
-        style={styles.gradient}
+        style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: height, zIndex: 1 }}
         locations={[0.3, 1]}
       />
       <LinearGradient
         colors={['rgba(0,0,0, 0)', 'rgba(0,0,0, 1)']}
-        style={styles.gradient2}
+        style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: height, zIndex: 1 }}
         locations={[0.2, 1]}
       />
-      <View style={styles.formContainer}>
+      <View style={tailwind('absolute bottom-12 w-full px-5 z-20')}>
         <TextInput
-          style={styles.input}
+          style={tailwind('bg-white bg-opacity-90 rounded-full p-4 mb-4 text-lg')}
           placeholder="Email"
           keyboardType="email-address"
           autoCapitalize="none"
@@ -70,91 +71,25 @@ export default function loginForm() {
           onChangeText={setEmail}
         />
         <TextInput
-          style={styles.input}
+          style={tailwind('bg-white bg-opacity-90 rounded-full p-4 mb-4 text-lg')}
           placeholder="Password"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity style={styles.button} onPress={loginUser}>
-          <Text style={styles.buttonText}>Submit</Text>
+        <TouchableOpacity
+          style={tailwind('bg-gray-900 py-4 rounded-full items-center mb-4')}
+          onPress={loginUser}
+        >
+          <Text style={tailwind('text-white text-lg font-bold')}>Submit</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.joinNowLink}
+          style={tailwind('self-center mt-2 mb-4')}
           onPress={() => router.replace('./RegisterUser')}
         >
-          <Text style={styles.joinNowText}>Ready to JMPN? Join Now.</Text>
+          <Text style={tailwind('text-white text-sm text-center font-bold')}>Ready to JMPN? Join Now.</Text>
         </TouchableOpacity>
       </View>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  video: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-
-
-  },
-  image2: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    zIndex: 2,
-  },
-  gradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: height,
-    zIndex: 1,
-  },
-  gradient2: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: height,
-    zIndex: 1,
-  },
-  formContainer: {
-    width: '100%',
-    position: 'absolute',
-    bottom: 50,
-    paddingHorizontal: 20,
-    zIndex: 3,
-  },
-  input: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 50,
-    padding: 15,
-    marginBottom: 15,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: '#292929',
-    paddingVertical: 15,
-    borderRadius: 50,
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  joinNowLink: {
-    alignSelf: 'center',
-    marginTop: 5,
-    marginBottom: 15,
-  },
-  joinNowText: {
-    color: 'whitesmoke',
-    fontSize: 12,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-});
