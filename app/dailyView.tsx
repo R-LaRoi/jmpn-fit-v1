@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import WeeklyView from "./(tabs)/weeklyView";
 import MonthlyView from "./(tabs)/monthlyView";
 import RoutineForm from "./components/routineForm";
-import Navbar from "./components/nav";
+// import Navbar from "./components/nav";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -39,7 +39,7 @@ export default function DailyView() {
 
   return (
     <View style={styles.container}>
-      <Navbar username={username} />
+      {/* <Navbar username={username} /> */}
       <Text style={styles.heading}>Consistency is Key</Text>
       <RoutineForm />
       {/* <WorkoutHistoryTabs /> */}

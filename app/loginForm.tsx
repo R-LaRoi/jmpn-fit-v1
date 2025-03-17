@@ -5,7 +5,8 @@ import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
-import { tailwind } from 'nativewind';
+import { StyleSheet } from 'react-native';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,58 +39,142 @@ export default function LoginForm() {
   }, []);
 
   return (
-    <>
+    <View style={styles.loginContainer}>
       <Video
         source={{ uri: 'https://github.com/user-attachments/assets/73e4ed6e-0dcf-404c-86f7-181313b25c81' }}
-        style={{ width: '100%', height: '100%', position: 'absolute' }}
+        style={styles.video}
         resizeMode="cover"
         muted
         repeat
       />
       <Image
         source={require('@/assets/images/lg.png')}
-        style={{ width: '100%', height: '100%', position: 'absolute', zIndex: 2 }}
+        style={styles.bgImg}
         resizeMode="contain"
       />
       <LinearGradient
         colors={['rgba(0,0,0, 0)', 'rgba(0,0,0, 1)']}
-        style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: height, zIndex: 1 }}
+        style={[styles.gradient, { zIndex: 1 }]}
         locations={[0.3, 1]}
       />
       <LinearGradient
         colors={['rgba(0,0,0, 0)', 'rgba(0,0,0, 1)']}
-        style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: height, zIndex: 1 }}
+        style={[styles.gradient, { zIndex: 2 }]}
         locations={[0.2, 1]}
       />
-      <View style={tailwind('absolute bottom-12 w-full px-5 z-20')}>
+      <View style={styles.formContainer}>
         <TextInput
-          style={tailwind('bg-white bg-opacity-90 rounded-full p-4 mb-4 text-lg')}
+          style={styles.input}
           placeholder="Email"
+          placeholderTextColor="rgba(0, 0, 0, 0.5)"
           keyboardType="email-address"
           autoCapitalize="none"
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
-          style={tailwind('bg-white bg-opacity-90 rounded-full p-4 mb-4 text-lg')}
+          style={styles.input}
           placeholder="Password"
+          placeholderTextColor="rgba(0, 0, 0, 0.5)"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
         />
         <TouchableOpacity
-          style={tailwind('bg-gray-900 py-4 rounded-full items-center mb-4')}
+          style={styles.button}
           onPress={loginUser}
         >
-          <Text style={tailwind('text-white text-lg font-bold')}>Submit</Text>
+          <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={tailwind('self-center mt-2 mb-4')}
+
           onPress={() => router.replace('./RegisterUser')}
         >
-          <Text style={tailwind('text-white text-sm text-center font-bold')}>Ready to JMPN? Join Now.</Text>
+          <Text style={styles.joinText}>Ready to JMPN? Join Now.</Text>
         </TouchableOpacity>
       </View>
-    </>
+    </View>
   );
 }
+
+
+
+const styles = StyleSheet.create({
+  video: {
+    width: width, height: height, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+
+  },
+  joinText: {
+    color: 'white',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+
+  gradient: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: height,
+  },
+  gradient2: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: height,
+  },
+  bgImg: {
+    zIndex: 5,
+    justifyContent: 'center',
+    width: '80%',
+    display: 'flex',
+    alignSelf: 'center',
+
+
+  },
+  contentContainer: {
+    flex: 1,
+
+    justifyContent: 'flex-end',
+    zIndex: 5
+
+  },
+  headingText: {
+    fontSize: 32,
+    fontWeight: '600',
+    color: 'black',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  formContainer: {
+    zIndex: 5,
+    padding: 30,
+    justifyContent: 'center',
+    marginTop: -60,
+    width: '90%',
+
+  },
+  input: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 50,
+    padding: 15,
+    marginBottom: 15,
+    fontSize: 16,
+    color: 'black',
+    width: '100%',
+  },
+  button: {
+    backgroundColor: '#292929',
+    paddingVertical: 15,
+    borderRadius: 50,
+    alignItems: 'center',
+    marginBottom: 15,
+    width: '100%',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
