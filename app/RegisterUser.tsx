@@ -4,171 +4,142 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { router } from 'expo-router';
 import axios from 'axios';
 import { LinearGradient } from 'expo-linear-gradient';
+import Video from 'react-native-video';
+
 const { width, height } = Dimensions.get('window');
 
 export default function RegisterUser() {
-
-  console.log("Register user component rendered");
-
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [verifyName, setVerifyName] = useState(false);
-  const [verifyEmail, setverifyEmail] = useState(false);
-  const [verifyPassword, setVerifyPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
 
   function handleName(inputName: string) {
     setUserName(inputName);
-    setVerifyName(false);
-    if (inputName.length > 1) {
-      setVerifyName(true);
-    }
-
   }
 
   function handleEmail(inputEmail: string) {
-
     setEmail(inputEmail);
-    setverifyEmail(false);
-    if (/\S+@\S+\.\S+/.test(inputEmail)) {
-      setverifyEmail(true);
-    }
   }
 
   function handlePassword(inputPassword: string) {
-
     setPassword(inputPassword);
-    setVerifyPassword(false);
-    if (inputPassword.length > 7) {
-      setVerifyPassword(true);
-    }
   }
 
   function handleRegisterUser() {
-    console.log('handle register user');
-    // if (!verifyName || !verifyEmail || !verifyPassword) {
-    //   Alert.alert('Error', 'Please fill in all required fields.');
-    //   return;
-    // }
     const userData = {
       username: userName,
       email: email,
       password: password,
-    }
+    };
 
-    axios.post('http://localhost:8000/register', userData)
+    axios
+      .post('http://localhost:8000/register', userData)
       .then((response) => {
-        console.log(response.data);
         Alert.alert('Success', 'User registered successfully!');
         router.replace('./loginForm');
       })
       .catch((error) => {
-        console.log(error);
         Alert.alert('Error', 'Registration failed.');
-      })
+      });
 
     setIsLoading(true);
-
   }
-  return (
-    <View style={styles.contentContainer}>
 
-      <LinearGradient
-        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
-        style={styles.gradient}
-        locations={[0.4, 1]}
+  return (
+    <View style={styles.container}>
+      <Video
+        source={{ uri: 'https://github.com/user-attachments/assets/73e4ed6e-0dcf-404c-86f7-181313b25c81' }}
+        style={styles.video}
+        resizeMode="cover"
+        muted
+        repeat
+      />
+
+      <Image
+        source={require('@/assets/images/lg.png')}
+        style={styles.logo}
+        resizeMode="contain"
       />
       <LinearGradient
-        colors={['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 1)']}
-        style={styles.gradient2}
-        locations={[0.7, 1]}
+        colors={['rgba(0,0,0, 0)', 'rgba(0,0,0, 0.6)']}
+        style={styles.overlay}
+        locations={[0.3, 1]}
       />
-      <KeyboardAwareScrollView contentContainerStyle={styles.formContainer}>
-        <View style={styles.card}>
-          <Image
-            source={require('@/assets/images/bl.png')}
-            style={styles.cardImage}
-            resizeMode="contain"
-          />
-          <Text style={styles.headingText}>Create Account</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Name"
-            value={userName}
-            onChangeText={handleName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={handleEmail}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry
-            value={password}
-            onChangeText={handlePassword}
-          />
-          <TouchableOpacity style={styles.button} onPress={handleRegisterUser}>
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
-          {isLoading && <ActivityIndicator size="large" color="white" />}
+
+      {/* Bottom card (largest) */}
+      <View style={styles.bottomCard}>
+        {/* Middle card */}
+        <View style={styles.middleCard}>
+          {/* Top card (form container) */}
+          <View style={styles.topCard}>
+
+            <View style={styles.formContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Name"
+                value={userName}
+                onChangeText={handleName}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={email}
+                onChangeText={handleEmail}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                secureTextEntry
+                value={password}
+                onChangeText={handlePassword}
+              />
+              <TouchableOpacity style={styles.signInButton} onPress={handleRegisterUser}>
+                <Text style={styles.buttonText}>Sign Up</Text>
+              </TouchableOpacity>
+              {isLoading && <ActivityIndicator size="large" color="white" />}
+              <TouchableOpacity onPress={() => router.replace('./loginForm')}>
+                <Text style={styles.joinText}>Already have an account? Sign in.</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-      </KeyboardAwareScrollView>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  gradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: height,
-  },
-  gradient2: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: height,
-  },
-  bgImg: {
-    justifyContent: 'flex-end',
-    width: '50%',
-  },
-  contentContainer: {
+  container: {
     flex: 1,
-    // padding: 20,
-    justifyContent: 'flex-end',
   },
-
-  cardImage: {
-    width: '100%',
-    height: '100%',
-    marginBottom: 0,
+  video: {
+    width: width,
+    height: height,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflow: 'hidden',
   },
-  headingText: {
-    fontSize: 32,
-    fontWeight: '600',
-    color: 'black',
-    textAlign: 'center',
-    marginBottom: 20,
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
-  formContainer: {
-
-    padding: 30,
-    justifyContent: 'center',
-
+  logo: {
+    position: 'absolute',
+    width: '50%',
+    alignSelf: 'center',
+    bottom: '30%',
   },
   input: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    backgroundColor: 'rgba(240, 240, 240, 0.9)',
     borderRadius: 50,
     padding: 15,
     marginBottom: 15,
@@ -176,17 +147,55 @@ const styles = StyleSheet.create({
     color: 'black',
     width: '100%',
   },
-  button: {
-    backgroundColor: '#292929',
+  signInButton: {
+    backgroundColor: '#F9004C',
     paddingVertical: 15,
-    borderRadius: 50,
-    alignItems: 'center',
-    marginBottom: 15,
+    paddingHorizontal: 90,
+    borderRadius: 30,
+    marginBottom: 25,
     width: '100%',
+    alignItems: 'center',
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  joinText: {
+    color: '#292929',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  bottomCard: {
+    position: 'absolute',
+    height: 380,
+    backgroundColor: 'rgba(252,252,252, 0.35)',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    bottom: 0,
+    alignSelf: 'center',
+    width: '100%',
+  },
+  middleCard: {
+    position: 'absolute',
+    bottom: 20,
+    backgroundColor: 'rgba(252,252,252, 0.55)',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    top: 25,
+    alignSelf: 'center',
+    width: '100%',
+    height: 340,
+  },
+  topCard: {
+    position: 'absolute',
+    bottom: -20,
+    backgroundColor: 'rgba(252,252,252, 0.95)',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    width: '100%',
+    padding: 40,
+
+
   },
 });
