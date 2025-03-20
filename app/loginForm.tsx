@@ -102,6 +102,7 @@ export default function LoginForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
   },
   video: {
     width: width,
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     overflow: 'hidden',
+
   },
   overlay: {
     position: 'absolute',
@@ -158,6 +160,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 40,
     alignItems: 'center',
+
     // marginLeft: -20,
   },
   input: {

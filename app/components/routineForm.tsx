@@ -155,12 +155,12 @@ export default function RoutineForm() {
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    backgroundColor: '#1b1b1b',
+    backgroundColor: 'white',
     padding: 20,
 
   },
   card: {
-    backgroundColor: '#292929',
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
     marginBottom: 20,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderBottomColor: '#8e93a1',
     marginBottom: 30,
-    color: 'white',
+    color: '#292929',
   },
   button: {
     backgroundColor: '#F9004C',

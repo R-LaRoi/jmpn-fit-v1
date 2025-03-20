@@ -6,8 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import WeeklyView from "./(tabs)/weeklyView";
 import MonthlyView from "./(tabs)/monthlyView";
 import RoutineForm from "./components/routineForm";
-// import Navbar from "./components/nav";
-
+import Navbar from "./components/nav";
+import Animation from "./components/animation";
 const Tab = createMaterialTopTabNavigator();
 
 export default function DailyView() {
@@ -39,8 +39,8 @@ export default function DailyView() {
 
   return (
     <View style={styles.container}>
-      {/* <Navbar username={username} /> */}
-      <Text style={styles.heading}>Consistency is Key</Text>
+      <Navbar username={username} />
+      <Animation />
       <RoutineForm />
       {/* <WorkoutHistoryTabs /> */}
     </View>
@@ -51,12 +51,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 20,
+    backgroundColor: 'white',
   },
   heading: {
-    fontSize: 24,
+    fontSize: 34,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
-    backgroundColor: '#1b1b1b',
+
   },
 });
