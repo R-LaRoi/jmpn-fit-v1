@@ -103,7 +103,7 @@ export default function ShowRoutines() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <Text style={styles.title}>My Routines</Text>
+      <Text style={styles.title}>Consistency is key</Text>
       {routines.length > 0 ? (
         <FlatList
           data={routines}
@@ -169,13 +169,13 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'white',
     padding: 16,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#f9004c',
     textAlign: 'center',
     marginBottom: 20,
     marginTop: 10,
@@ -185,11 +185,11 @@ const styles = StyleSheet.create({
   },
   card: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 16,
     margin: 8,
-    shadowColor: '#000',
+    shadowColor: '#f9004c',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   weekdayText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1a73e8',
+    color: '#f9004c',
     marginBottom: 8,
   },
   typeText: {
@@ -262,15 +262,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   infoContainer: {
-    backgroundColor: '#f5f8ff',
+    backgroundColor: 'whitesmoke',
     borderRadius: 8,
     padding: 12,
     marginBottom: 15,
+    borderTopColor: '#f9004c',
+    borderTopWidth: 10,
   },
   infoText: {
     fontSize: 16,
     marginBottom: 8,
-    color: '#333',
+    color: '#292929',
   },
   bold: {
     fontWeight: 'bold',

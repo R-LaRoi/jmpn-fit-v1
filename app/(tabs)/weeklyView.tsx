@@ -11,7 +11,6 @@ export default function WeeklyView() {
     <View>
       <Navbar username={username} />
       <AvatarTabs />
-      <Text>Weekly View</Text>
       <ShowRoutines />
     </View>
   );

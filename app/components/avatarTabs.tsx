@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 5,
+    backgroundColor: 'white',
   },
 
   logo: {
