@@ -1,4 +1,4 @@
-// components/Navbar.js
+
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import Logout from './logoutButton';
@@ -6,13 +6,14 @@ import Logout from './logoutButton';
 export default function Navbar({ username }: { username: string }) {
   return (
     <View style={styles.navbar}>
+      <Logout />
       <Image
-        source={require('@/assets/images/lg.png')}
+        source={require('@/assets/images/bl.png')}
         style={styles.logo}
         resizeMode="contain"
       />
       <Text style={styles.username}>{username}</Text>
-      <Logout />
+
     </View>
   );
 }
@@ -24,20 +25,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
-    // backgroundColor: '#292929',
-    // borderBottomWidth: .5,
-    // borderBottomColor: '#ddd',
-    boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px',
+
+    borderBottomWidth: .5,
+    borderBottomColor: '#ddd',
 
   },
   logo: {
-    width: 50,
-    height: 50,
+    width: 80,
+    height: 80,
+    marginTop: -30,
   },
   username: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'whitesmoke',
+    color: '#292929',
     textTransform: 'capitalize',
 
   },

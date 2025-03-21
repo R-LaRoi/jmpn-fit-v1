@@ -1,48 +1,19 @@
-// DailyView.js
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import WeeklyView from "./(tabs)/weeklyView";
-import MonthlyView from "./(tabs)/monthlyView";
+
+import React from "react";
+import { View, StyleSheet, } from "react-native";
 import RoutineForm from "./components/routineForm";
 import Navbar from "./components/nav";
-import Animation from "./components/animation";
-const Tab = createMaterialTopTabNavigator();
+import AvatarTabs from "./components/avatarTabs";
+import { activeUser } from './components/username';
+
 
 export default function DailyView() {
-  const [username, setUsername] = useState("guest");
-
-  useEffect(() => {
-    async function fetchUsername() {
-      try {
-        const storedUsername = await AsyncStorage.getItem('username');
-        if (storedUsername) {
-          setUsername(storedUsername);
-        }
-      } catch (error) {
-        console.error("Error retrieving username:", error);
-      }
-    }
-
-    fetchUsername();
-  }, []);
-
-  // function WorkoutHistoryTabs() {
-  //   return (
-  //     <Tab.Navigator>
-  //       <Tab.Screen name="Weekly" component={WeeklyView} />
-  //       <Tab.Screen name="Monthly" component={MonthlyView} />
-  //     </Tab.Navigator>
-  //   );
-  // }
-
+  const { username } = activeUser();
   return (
     <View style={styles.container}>
       <Navbar username={username} />
-      <Animation />
+      <AvatarTabs />
       <RoutineForm />
-      {/* <WorkoutHistoryTabs /> */}
     </View>
   );
 }
@@ -53,6 +24,8 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: 'white',
   },
+
+
   heading: {
     fontSize: 34,
     fontWeight: 'bold',
@@ -60,4 +33,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
 
   },
+  logo: {
+
+    width: 86,
+    height: 86,
+    borderRadius: 70,
+    marginHorizontal: 9,
+    marginTop: 20,
+    borderWidth: 1,
+    borderStyle: 'dotted',
+    borderColor: 'gray',
+
+  },
+
 });

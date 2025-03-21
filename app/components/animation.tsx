@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-
 import { View, Image, Text, StyleSheet, Animated, Easing } from 'react-native';
 
 export default function Animation() {
-  const text = "constistency is key ";
+  const text = "celebrate small wins ";
   const spinValue = useRef(new Animated.Value(0)).current;
-
 
   useEffect(() => {
     Animated.loop(
@@ -28,7 +26,7 @@ export default function Animation() {
   return (
     <View style={styles.circle}>
       <Image
-        source={{ uri: 'https://assets.codepen.io/7344750/internal/avatars/users/default.png' }}
+        source={(require('@/assets/images/jmpn.jpg'))}
         style={styles.logo}
         resizeMode="cover"
       />
@@ -58,17 +56,22 @@ export default function Animation() {
 const styles = StyleSheet.create({
   circle: {
     position: 'relative',
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 100,
+
+
   },
   logo: {
     position: 'absolute',
-    width: 140,
-    height: 140,
+    width: 135,
+    height: 135,
     borderRadius: 70,
+
+
   },
   textContainer: {
     position: 'absolute',
@@ -76,13 +79,13 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+
   },
   textSpan: {
     position: 'absolute',
     fontSize: 16,
     color: '#f9004c',
     fontFamily: 'Arial',
-
 
   },
 });

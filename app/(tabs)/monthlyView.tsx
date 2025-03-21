@@ -1,24 +1,15 @@
 import { View, Text } from "react-native";
-import WeeklyView from '../(tabs)/weeklyView';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
-const Tab = createMaterialTopTabNavigator();
-
+import AvatarTabs from "../components/avatarTabs";
+import Navbar from "../components/nav";
+import { activeUser } from '../components/username';
 
 export default function MonthlyView() {
-
-  function WorkoutHistoryTabs() {
-    return (
-      <Tab.Navigator>
-        <Tab.Screen name="Weekly" component={WeeklyView} />
-        <Tab.Screen name="Monthly" component={MonthlyView} />
-      </Tab.Navigator>
-    );
-  }
+  const { username } = activeUser();
 
   return (
     <View>
-
+      <Navbar username={username} />
+      <AvatarTabs />
       <Text>Monthly View</Text>
       <div> name</div>
       <ul>

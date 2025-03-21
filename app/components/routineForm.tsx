@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import WeeklyView from '../(tabs)/weeklyView';
-import MonthlyView from '../(tabs)/monthlyView';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-const Tab = createMaterialTopTabNavigator();
 
-function WorkoutHistoryTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Weekly" component={WeeklyView} />
-      <Tab.Screen name="Monthly" component={MonthlyView} />
-    </Tab.Navigator>
-  );
-}
 
 export default function RoutineForm() {
   const [formData, setFormData] = useState({
@@ -112,6 +100,7 @@ export default function RoutineForm() {
 
   return (
     <View style={styles.pageContainer}>
+
       <View style={styles.card}>
         <Text style={styles.day}>{weekday}</Text>
         <TextInput
@@ -142,12 +131,11 @@ export default function RoutineForm() {
         <Text>Date: {date}</Text>
 
 
-
       </View>
       <TouchableOpacity style={styles.button} onPress={handleSaveRoutine}>
         <Text style={styles.buttonText}>SAVE Workout</Text>
       </TouchableOpacity>
-      <WorkoutHistoryTabs />
+
     </View>
   );
 }
@@ -155,7 +143,8 @@ export default function RoutineForm() {
 const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    borderBottomColor: '#f9004c',
+
     padding: 20,
 
   },
@@ -163,7 +152,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
+    marginTop: 25,
     marginBottom: 20,
+    borderTopColor: '#f9004c',
+    borderTopWidth: 10,
+    boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px'
   },
   title: {
     fontSize: 24,
@@ -184,6 +177,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'center',
     borderRadius: 15,
+    boxShadow: 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px',
   },
   buttonText: {
     fontSize: 20,
@@ -196,5 +190,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
-  }
+  },
+  logo: {
+    position: 'absolute',
+    width: 135,
+    height: 135,
+    borderRadius: 70,
+
+
+  },
 });
