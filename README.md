@@ -1,50 +1,124 @@
-# Welcome to your Expo app 👋
+# JMPN Fit V1
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Description
 
-## Get started
+JMPN Fit V1 is a comprehensive fitness application designed to help users track their workouts, monitor their progress, and achieve their fitness goals. The application provides a user-friendly interface and a variety of features to support a healthy lifestyle.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+### Frontend
 
-2. Start the app
+- **React Native with Expo:** Built using React Native and Expo for cross-platform compatibility.
+- **User Authentication:** Allows users to register and log in.
+- **Workout Tracking:** Users can input workout details, including type, duration, level, and exercises.
+- **Date and Weekday Display:** Automatically displays the current date and weekday.
+- **Data Validation:** Ensures all required fields are filled before submission.
+- **Exercise List Conversion:** Converts a newline-separated string of exercises into an array.
+- **Loading Indicator:** Displays a loading state while data is being submitted.
+- **Error Handling:** Alerts the user if there is an issue with data submission.
 
-   ```bash
-    npx expo start
-   ```
+### Backend
 
-In the output, you'll find options to open the app in a
+- **Express Server:** Handles API requests and responses.
+- **MongoDB Integration:** Uses Mongoose for MongoDB operations.
+- **User Registration and Authentication:** Allows users to register and log in securely using bcrypt for password hashing and JWT for authentication.
+- **Save Workout Routines:** Allows authenticated users to save workout routines to their profile.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Installation
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Prerequisites
 
-## Get a fresh project
+- Node.js
+- MongoDB
+- Expo CLI
 
-When you're ready, run:
+### Setup
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone [https://github.com/R-LaRoi/jmpn-fit-v1.git](https://github.com/R-LaRoi/jmpn-fit-v1.git)
+    ```
+
+2.  **Navigate to the project directory:**
+
+    ```bash
+    cd jmpn-fit-v1
+    ```
+
+3.  **Install the dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+### Environment Variables
+
+1.  Create a `.env` file in the root directory.
+2.  Add the following environment variables:
+
+    ```
+    PORT=8000
+    JWT_SECRET=your_jwt_secret
+    MONGODB_URI=your_mongodb_connection_string
+    ```
+
+## Usage
+
+### Starting the Backend Server
+
+To start the backend server, run the following command:
 
 ```bash
-npm run reset-project
+npm start
+
+API Endpoints
+GET /
+
+Description: Checks the status of the server.
+Response: { data: "started" }
+POST /register
+
+Description: Registers a new user.
+
+Request Body (JSON):
+{
+  "username": "exampleUser",
+  "email": "user@example.com",
+  "password": "password123"
+}
+Response: "User registered successfully" or error message.
+
+POST /login-user
+
+Description: Authenticates a user and returns a JWT token.
+
+Request Body (JSON):
+
+JSON
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+Response: JWT token, userType, username, userId or error message.
+
+POST /save-routine
+
+Description: Saves a workout routine for an authenticated user.
+
+Request Body (JSON):
+
+JSON
+
+{
+  "userId": "user_id",
+  "duration": "30 min",
+  "type": "Cardio",
+  "level": "Beginner",
+  "date": "March 21, 2025",
+  "weekday": "Friday",
+  "exercises": "Pushups", "Squats"]
+}
+Response: "Routine saved successfully!" or error message.
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
