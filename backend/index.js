@@ -169,6 +169,65 @@ app.post("/save-routine", async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
+
+app.get("/weekly-routines/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    console.log("Fetching routines for user ID:", userId);
+    // Validate userId format
+    if (!mongoose.isValidObjectId(userId)) {
+      return res.status(400).json({ error: "Invalid userId format" });
+    }
+
+    // Find user and get their routines
+    const user = await User.findById(userId).select("routines");
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ routines: user.routines });
+  } catch (error) {
+    console.error("Error fetching routines:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/routine/:userId/:routineId", async (req, res) => {
+  try {
+    const { userId, routineId } = req.params;
+    console.log(
+      "Fetching routine details for userId:",
+      userId,
+      "and routineId:",
+      routineId
+    );
+
+    if (
+      !mongoose.isValidObjectId(userId) ||
+      !mongoose.isValidObjectId(routineId)
+    ) {
+      return res.status(400).json({ error: "Invalid user or routine ID" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const routine = user.routines.find((r) => r._id.toString() === routineId);
+
+    if (!routine) {
+      return res.status(404).json({ error: "Routine not found" });
+    }
+    console.log("Routine found:", routine);
+
+    res.status(200).json({ routine });
+  } catch (error) {
+    console.error("Error fetching routine details:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Start Server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

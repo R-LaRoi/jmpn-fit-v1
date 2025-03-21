@@ -3,6 +3,7 @@ import React from 'react';
 import AvatarTabs from "../components/avatarTabs";
 import Navbar from "../components/nav";
 import { activeUser } from '../components/username';
+import ShowRoutines from "../components/showRoutines";
 export default function WeeklyView() {
   const { username } = activeUser();
 
@@ -11,8 +12,7 @@ export default function WeeklyView() {
       <Navbar username={username} />
       <AvatarTabs />
       <Text>Weekly View</Text>
-      <div> name</div>
-      <ul><li>sun</li><li>mon</li><li></li></ul>
+      <ShowRoutines />
     </View>
   );
 }

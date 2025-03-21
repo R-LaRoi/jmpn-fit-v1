@@ -3,7 +3,7 @@ const Routine = require("../models/routineSchema");
 const router = express.Router();
 
 
-// Example route to fetch routines
+
 router.get("/routines", async (req, res) => {
     try {
         const routines = await Routine.find().toArray();

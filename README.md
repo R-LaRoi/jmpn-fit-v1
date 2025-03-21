@@ -118,7 +118,7 @@ JSON
   "level": "Beginner",
   "date": "March 21, 2025",
   "weekday": "Friday",
-  "exercises": "Pushups", "Squats"]
+  "exercises": '["Pushups", "Squats"]'
 }
 Response: "Routine saved successfully!" or error message.
 ```
