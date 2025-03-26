@@ -58,11 +58,8 @@ export default function LoginForm() {
 
 
       <View style={styles.bottomCard}>
-
         <View style={styles.middleCard}>
-
           <View style={styles.topCard}>
-
             <Text style={styles.joinText}>Login</Text>
             <TextInput
               style={styles.input}

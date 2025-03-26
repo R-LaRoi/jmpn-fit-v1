@@ -173,7 +173,7 @@ app.post("/save-routine", async (req, res) => {
 app.get("/weekly-routines/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
-    console.log("Fetching routines for user ID:", userId);
+
     // Validate userId format
     if (!mongoose.isValidObjectId(userId)) {
       return res.status(400).json({ error: "Invalid userId format" });
@@ -195,6 +195,7 @@ app.get("/weekly-routines/:userId", async (req, res) => {
 app.get("/routine/:userId/:routineId", async (req, res) => {
   try {
     const { userId, routineId } = req.params;
+
     console.log(
       "Fetching routine details for userId:",
       userId,
@@ -224,6 +225,54 @@ app.get("/routine/:userId/:routineId", async (req, res) => {
     res.status(200).json({ routine });
   } catch (error) {
     console.error("Error fetching routine details:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/monthly-routines/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    if (!mongoose.isValidObjectId(userId)) {
+      return res.status(400).json({ error: "Invalid userId format" });
+    }
+
+    const user = await User.findById(userId).select("routines");
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const routines = user.routines;
+
+    // Group routines by month
+    const monthlyRoutines = routines.reduce((acc, routine) => {
+      const dateString = routine.date;
+      const dateParts = dateString.split(", ");
+      const dateOnly = dateParts[1];
+      const dateObj = new Date(dateOnly);
+
+      const year = dateObj.getFullYear();
+      const month = dateObj.getMonth();
+
+      const monthKey = `${year}-${month + 1}`;
+
+      if (!acc[monthKey]) {
+        acc[monthKey] = {
+          month: month + 1,
+          year: year,
+          routines: [],
+        };
+      }
+
+      acc[monthKey].routines.push(routine);
+      return acc;
+    }, {});
+
+    const monthlyRoutinesArray = Object.values(monthlyRoutines);
+
+    res.status(200).json({ monthlyRoutines: monthlyRoutinesArray });
+  } catch (error) {
+    console.error("Error fetching monthly routines:", error);
     res.status(500).json({ error: error.message });
   }
 });

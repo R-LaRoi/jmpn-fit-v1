@@ -37,7 +37,7 @@ export default function ShowRoutines() {
         return;
       }
 
-      const response = await axios.get(`http://localhost:8000/weekly-routines/${userId}`);
+      const response = await axios.get(`http://localhost:8000/weekly-routines/${userId}?`);
       setRoutines(response.data.routines);
       setLoading(false);
     } catch (err) {
@@ -112,13 +112,17 @@ export default function ShowRoutines() {
           contentContainerStyle={styles.listContainer}
           numColumns={2}
         />
+
       ) : (
         <View style={styles.centeredContainer}>
           <Text style={styles.noRoutinesText}>
             No routines found. Create your first workout routine!
           </Text>
         </View>
-      )}
+
+      )
+
+      }
 
       <Modal
         animationType="slide"
