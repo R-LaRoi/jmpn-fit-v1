@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-
+import Navbar from './nav';
+import { activeUser } from '../components/username';
 interface Routine {
-  _id?: string; // Make _id optional
+  _id?: string;
   weekday: string;
   type: string;
   level: string;
@@ -15,13 +16,14 @@ interface Routine {
 export default function MonthRoutinesDetails() {
   const { routines: routinesString } = useLocalSearchParams();
   const routines: Routine[] = JSON.parse(routinesString as string);
+  const { username } = activeUser();
 
   console.log("Routines Array:", routines); // Add this line
 
   function renderRoutineCard({ item }: { item: Routine }) {
     return (
       <TouchableOpacity style={styles.card}>
-        <Text style={styles.weekdayText}>{item.weekday}</Text>
+        <Text style={styles.weekdayText}>{item.date}</Text>
         <Text style={styles.typeText}>{item.type}</Text>
         <Text style={styles.levelText}>Level: {item.level}</Text>
       </TouchableOpacity>
@@ -30,6 +32,7 @@ export default function MonthRoutinesDetails() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Navbar username={username} />
       <StatusBar barStyle="dark-content" />
       <Text style={styles.title}>Monthly Routines</Text>
       <FlatList
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
     minHeight: 120,
   },
   weekdayText: {
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#f9004c',
     marginBottom: 8,
