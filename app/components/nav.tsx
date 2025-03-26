@@ -20,12 +20,12 @@ export default function Navbar({ username }: { username: string }) {
 
 const styles = StyleSheet.create({
   navbar: {
-    marginTop: -20,
+    marginTop: -10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10,
-
+    backgroundColor: 'white',
     borderBottomWidth: .5,
     borderBottomColor: '#ddd',
 
