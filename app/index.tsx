@@ -1,17 +1,53 @@
-
-import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Image, StyleSheet } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Dimensions, Image, StyleSheet, Animated } from 'react-native';
 import Video from 'react-native-video';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import '../app/global.css'
-
+import '../app/global.css';
 
 const { width, height } = Dimensions.get('window');
 console.log('Screen Dimensions:', width, height);
+
 export default function Index() {
+  const logoScale = useRef(new Animated.Value(0.5)).current; // Start small
+  const logoOpacity = useRef(new Animated.Value(0)).current;
+  const buttonsTranslateY = useRef(new Animated.Value(100)).current; // Start off-screen
+  const buttonsOpacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Logo Animation
+    Animated.parallel([
+      Animated.timing(logoScale, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(logoOpacity, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      // Buttons Animation
+      Animated.parallel([
+        Animated.timing(buttonsTranslateY, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(buttonsOpacity, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+  }, []);
+
+
   return (
     <View style={styles.container}>
+
       <Video
         source={{ uri: 'https://github.com/user-attachments/assets/73e4ed6e-0dcf-404c-86f7-181313b25c81' }}
         style={styles.video}
@@ -20,18 +56,20 @@ export default function Index() {
         repeat
       />
       <LinearGradient
-        colors={['rgba(252,252,252, 0)', 'rgba(252,252,252, .35)']}
-        style={styles.overlay}
-        locations={[0, 1]}
+        colors={['rgba(27, 28, 29, .7)', 'rgba(27, 28, 29, 0.7)', '#1B1C1D']}
+        style={[styles.overlay, { zIndex: 1 }]}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
       />
-      <Image
+      <Animated.Image
         source={require('@/assets/images/lg.png')}
-        style={styles.logo}
+        style={[styles.logo, { transform: [{ scale: logoScale }], opacity: logoOpacity, zIndex: 2 }]}
         resizeMode="contain"
       />
 
-      <View style={styles.buttonContainer}>
-        <View style={styles.topCard}>
+
+      <Animated.View style={[styles.buttonContainer, { transform: [{ translateY: buttonsTranslateY }], opacity: buttonsOpacity, zIndex: 3 }]}>
+        <View >
           <TouchableOpacity style={styles.signInButton} onPress={() => router.push('./loginForm')}>
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
@@ -39,29 +77,13 @@ export default function Index() {
             <Text style={styles.joinText}>Ready to JMPN? Join Now.</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderLeftWidth: 5,
-    borderLeftColor: 'white',
-    borderRightColor: 'white',
-    borderRightWidth: 5,
-  },
-  topCard: {
-    position: 'absolute',
-    bottom: -130,
-    backgroundColor: 'rgba(255,255,255, 0.95)',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    width: '100%',
-    padding: 40,
-    alignItems: 'center',
-    height: 200,
   },
   video: {
     width: width,
@@ -72,9 +94,9 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     overflow: 'hidden',
-
   },
   overlay: {
+    flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,
@@ -89,10 +111,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    bottom: 120,
+    bottom: 90,
     width: '100%',
     alignItems: 'center',
-    backgroundColor: 'white',
   },
   signInButton: {
     backgroundColor: '#F9004C',
@@ -107,7 +128,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   joinText: {
-    color: 'black',
+    color: 'white',
     fontSize: 16,
   },
 });
