@@ -10,20 +10,58 @@ export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
+  // function validateForm() {
+  //   if (!email || !password) {
+  //     Alert.alert('Error', 'Please fill in all fields.');
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
+  function validateForm() {
+    console.log('validateForm called');
+    console.log('email:', email);
+    console.log('password:', password);
+
+    if (!email || !password) {
+      Alert.alert('Error', 'Please fill in all fields.');
+      console.log("ValidateForm returned false");
+      return false;
+    } else {
+      console.log("validateForm returned true");
+      return true;
+    }
+  }
+
+
   function loginUser() {
     const userData = { email, password };
+    Alert.alert('Test', 'This is a test alert.');
+    if (!validateForm()) {
+      return;
+    }
 
-    axios.post('http://localhost:8000/login-user', userData).then(res => {
-      if (res.data.status === 'ok') {
-        Alert.alert('Logged In Successfully');
-        AsyncStorage.setItem('token', res.data.data);
-        AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
-        AsyncStorage.setItem('userType', res.data.userType);
-        AsyncStorage.setItem('username', res.data.username);
-        AsyncStorage.setItem('userId', res.data.userId);
-        router.replace('./dailyView');
-      }
-    });
+    axios
+      .post('http://localhost:8000/login-user', userData)
+      .then((res) => {
+        if (res.data.status === 'ok') {
+          Alert.alert('Logged In Successfully');
+          AsyncStorage.setItem('token', res.data.data);
+          AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+          AsyncStorage.setItem('userType', res.data.userType);
+          AsyncStorage.setItem('username', res.data.username);
+          AsyncStorage.setItem('userId', res.data.userId);
+          router.replace('./dailyView');
+        } else {
+          Alert.alert('Login Failed', res.data.error || 'Incorrect Credentials');
+        }
+      })
+      .catch((error) => {
+        console.error('Login error:', error);
+        Alert.alert('Login Error', 'An error occurred during login.');
+      });
   }
 
   async function getData() {
